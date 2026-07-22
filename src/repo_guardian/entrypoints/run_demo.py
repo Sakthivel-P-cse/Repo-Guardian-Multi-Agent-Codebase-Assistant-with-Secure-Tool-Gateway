@@ -2,8 +2,6 @@ import asyncio
 import json
 from types import SimpleNamespace
 
-from pydantic import ValidationError
-
 from repo_guardian.adapters.github_adapter import GitHubAdapter
 from repo_guardian.adapters.mock_github_adapter import MockGitHubAdapter
 from repo_guardian.agents.code_search import CodeSearchAgent
@@ -69,10 +67,7 @@ class _DemoClient:
 
 
 def _load_config() -> Config:
-    try:
-        return Config()
-    except ValidationError:
-        return Config(openai_api_key="demo")
+    return Config()
 
 
 async def _run() -> None:
@@ -84,8 +79,11 @@ async def _run() -> None:
     )
     client = (
         _DemoClient(config.pr_number)
-        if config.openai_api_key == "demo"
-        else OpenAIMessageClient(api_key=config.openai_api_key)
+        if config.nvidia_api_key in {"", "demo"}
+        else OpenAIMessageClient(
+            api_key=config.nvidia_api_key,
+            base_url=config.nvidia_base_url,
+        )
     )
     audit_logger = SQLiteAuditLogger(config.db_path)
     classifier = ContextualRiskClassifier()
