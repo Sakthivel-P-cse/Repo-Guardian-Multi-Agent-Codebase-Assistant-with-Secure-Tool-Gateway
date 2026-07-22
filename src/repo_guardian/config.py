@@ -12,7 +12,7 @@ class Config(BaseSettings):
     wall_clock_timeout_seconds: int = 120
     cost_budget_usd: float = 1.0
     db_path: str = "repo_guardian.db"
-    model: str = "z-ai/glm-5.2"
+    model: str = "nvidia/nemotron-3-ultra-550b-a55b"
     enable_goal_consistency_check: bool = True
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")

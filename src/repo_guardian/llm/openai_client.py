@@ -7,8 +7,16 @@ from openai import AsyncOpenAI
 class OpenAIMessageClient:
     """Compatibility layer for OpenAI-style Chat Completions providers."""
 
-    def __init__(self, api_key: str, base_url: str | None = None) -> None:
+    def __init__(
+        self,
+        api_key: str,
+        base_url: str | None = None,
+        extra_body: dict[str, Any] | None = None,
+        max_tokens_override: int | None = None,
+    ) -> None:
         self._client = AsyncOpenAI(api_key=api_key, base_url=base_url)
+        self._extra_body = extra_body
+        self._max_tokens_override = max_tokens_override
         self.messages = self
 
     async def create(
@@ -23,15 +31,17 @@ class OpenAIMessageClient:
         if system:
             request_messages.append({"role": "system", "content": system})
         request_messages.extend(messages)
-        stream = await self._client.chat.completions.create(
-            model=model,
-            messages=request_messages,
-            max_tokens=max_tokens,
-            temperature=1,
-            top_p=1,
-            seed=42,
-            stream=True,
-        )
+        request: dict[str, Any] = {
+            "model": model,
+            "messages": request_messages,
+            "max_tokens": self._max_tokens_override or max_tokens,
+            "temperature": 1,
+            "top_p": 0.95,
+            "stream": True,
+        }
+        if self._extra_body:
+            request["extra_body"] = self._extra_body
+        stream = await self._client.chat.completions.create(**request)
         content = []
         output_tokens = None
         async for chunk in stream:

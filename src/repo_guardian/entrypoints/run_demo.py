@@ -83,6 +83,14 @@ async def _run() -> None:
         else OpenAIMessageClient(
             api_key=config.nvidia_api_key,
             base_url=config.nvidia_base_url,
+            extra_body={
+                "chat_template_kwargs": {
+                    "enable_thinking": True,
+                    "force_nonempty_content": True,
+                },
+                "reasoning_budget": 16_384,
+            },
+            max_tokens_override=16_384,
         )
     )
     audit_logger = SQLiteAuditLogger(config.db_path)

@@ -38,7 +38,7 @@ cp .env.example .env
 uv run python -m repo_guardian.entrypoints.run_demo
 ```
 
-The example configuration uses the offline demo client and mock GitHub adapter. Replace `NVIDIA_API_KEY=demo` with an NVIDIA API key to use `z-ai/glm-5.2` through NVIDIA's hosted NIM endpoint. Set `GITHUB_TOKEN` to switch to the real GitHub adapter, `GITHUB_REPO=owner/repo` to select the repository, and `PR_NUMBER` to select the pull request. MCP HTTP endpoints can be started with `uv run python -m repo_guardian.entrypoints.serve_mcp`.
+The example configuration uses the offline demo client and mock GitHub adapter. Replace `NVIDIA_API_KEY=demo` with an NVIDIA API key to use `nvidia/nemotron-3-ultra-550b-a55b` through NVIDIA's hosted NIM endpoint. Repo Guardian enables streaming, reasoning, a 16,384-token reasoning budget, and a non-empty final response for coding-agent output. Set `GITHUB_TOKEN` to switch to the real GitHub adapter, `GITHUB_REPO=owner/repo` to select the repository, and `PR_NUMBER` to select the pull request. MCP HTTP endpoints can be started with `uv run python -m repo_guardian.entrypoints.serve_mcp`.
 
 ## Risk model
 
