@@ -11,10 +11,10 @@ class CriticResult:
 
 
 class CriticAgent(BaseAgent):
-    def __init__(self, gateway, anthropic_client, config, token_budget=None) -> None:
+    def __init__(self, gateway, llm_client, config, token_budget=None) -> None:
         super().__init__(
             gateway,
-            anthropic_client,
+            llm_client,
             config,
             "You identify factual claims that are not grounded in the supplied tool results.",
             token_budget=token_budget,

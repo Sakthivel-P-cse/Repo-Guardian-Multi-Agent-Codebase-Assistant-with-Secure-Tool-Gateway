@@ -11,12 +11,12 @@ class GoalCheckerPort(Protocol):
 class GoalConsistencyChecker:
     def __init__(
         self,
-        anthropic_client: Any,
+        llm_client: Any,
         model: str,
         enabled: bool = True,
         token_budget: RunTokenBudget | None = None,
     ) -> None:
-        self._client = anthropic_client
+        self._client = llm_client
         self._model = model
         self._enabled = enabled
         self._token_budget = token_budget

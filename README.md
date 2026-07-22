@@ -2,7 +2,7 @@
 
 ## What it does
 
-Repo Guardian is a locally runnable multi-agent pull-request assistant that delegates repository inspection, review writing, protected operations, and factual grounding to narrowly scoped agents. Every repository tool call crosses a secure gateway that classifies contextual risk, blocks Tier 3 operations, checks Tier 2 actions against the user's goal, issues a single-use scoped token, verifies state changes, and appends an immutable audit record. The mock GitHub adapter drives the default demo; setting `GITHUB_TOKEN` swaps in the real adapter without changing gateway or agent code.
+Repo Guardian is a locally runnable multi-agent pull-request assistant that delegates repository inspection, review writing, protected operations, and factual grounding to narrowly scoped agents. Every repository tool call crosses a secure gateway that classifies contextual risk, blocks Tier 3 operations, checks Tier 2 actions against the user's goal, issues a single-use scoped token, verifies state changes, and appends an immutable audit record. The mock GitHub adapter drives the default demo; setting `GITHUB_TOKEN` swaps in the real adapter without changing gateway or agent code. OpenAI powers the agent reasoning through the Responses API.
 
 ## Architecture diagram
 
@@ -38,7 +38,7 @@ cp .env.example .env
 uv run python -m repo_guardian.entrypoints.run_demo
 ```
 
-The example configuration uses the offline demo client and mock GitHub adapter. Replace `ANTHROPIC_API_KEY=demo` with an Anthropic key to use `claude-sonnet-4-6`; set `GITHUB_TOKEN` to switch to the real GitHub adapter. MCP HTTP endpoints can be started with `uv run python -m repo_guardian.entrypoints.serve_mcp`.
+The example configuration uses the offline demo client and mock GitHub adapter. Replace `OPENAI_API_KEY=demo` with an OpenAI API key to use the configured OpenAI model; set `GITHUB_TOKEN` to switch to the real GitHub adapter, `GITHUB_REPO=owner/repo` to select the repository, and `PR_NUMBER` to select the pull request. MCP HTTP endpoints can be started with `uv run python -m repo_guardian.entrypoints.serve_mcp`.
 
 ## Risk model
 

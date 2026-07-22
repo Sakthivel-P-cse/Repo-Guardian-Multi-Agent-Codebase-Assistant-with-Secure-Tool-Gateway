@@ -17,7 +17,7 @@ class SupervisorAgent(BaseAgent):
     def __init__(
         self,
         gateway,
-        anthropic_client,
+        llm_client,
         config,
         repository: TaskRepositoryPort,
         code_search_agent: CodeSearchAgent,
@@ -31,7 +31,7 @@ class SupervisorAgent(BaseAgent):
     ) -> None:
         super().__init__(
             gateway,
-            anthropic_client,
+            llm_client,
             config,
             "You plan bounded repository-analysis tasks, synthesize grounded results, and never call tools directly.",
             result_sink,
@@ -133,8 +133,13 @@ class SupervisorAgent(BaseAgent):
         return AgentResult("supervisor", draft, tool_calls, self.critic_verdict.passed)
 
     def _plan(self, goal: str) -> TaskGraph:
+        pr_number = self._config.pr_number
         subtasks = [
-            SubTask("inspect", "Inspect PR #142, its diff, and recent commits", "code_search"),
+            SubTask(
+                "inspect",
+                f"Inspect PR #{pr_number}, its diff, and recent commits",
+                "code_search",
+            ),
             SubTask(
                 "review",
                 "Draft the safety finding for supervisor approval and publication",

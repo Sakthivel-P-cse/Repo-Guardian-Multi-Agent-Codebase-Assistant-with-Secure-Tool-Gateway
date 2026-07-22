@@ -17,7 +17,7 @@ def _load_config() -> Config:
     try:
         return Config()
     except ValidationError:
-        return Config(anthropic_api_key="demo")
+        return Config(openai_api_key="demo")
 
 
 def _build_app() -> FastAPI:

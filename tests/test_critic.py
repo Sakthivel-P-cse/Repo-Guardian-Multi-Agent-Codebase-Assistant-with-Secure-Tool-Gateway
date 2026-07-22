@@ -22,7 +22,7 @@ class Client:
 
 
 def critic(response):
-    return CriticAgent(object(), Client(response), Config(anthropic_api_key="test"))
+    return CriticAgent(object(), Client(response), Config(openai_api_key="test"))
 
 
 async def test_all_grounded_claims_pass():
@@ -55,7 +55,7 @@ async def test_shared_token_budget_caps_model_request():
     agent = CriticAgent(
         object(),
         client,
-        Config(anthropic_api_key="test", max_tokens_per_run=1),
+        Config(openai_api_key="test", max_tokens_per_run=1),
         RunTokenBudget(1),
     )
     await agent.run(

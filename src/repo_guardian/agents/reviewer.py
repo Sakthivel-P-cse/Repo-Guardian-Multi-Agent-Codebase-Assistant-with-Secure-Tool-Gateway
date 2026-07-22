@@ -5,14 +5,15 @@ from repo_guardian.domain.tool_call import ToolCall
 
 
 class ReviewPublisher:
-    def __init__(self, gateway, result_sink) -> None:
+    def __init__(self, gateway, result_sink, pr_number: int) -> None:
         self._gateway = gateway
         self._result_sink = result_sink
+        self._pr_number = pr_number
 
     async def publish(self, body: str, context: TaskGraph):
         call = ToolCall(
             "post_comment",
-            {"pr_number": 142, "body": body},
+            {"pr_number": self._pr_number, "body": body},
             "reviewer",
             context.run_id,
         )
@@ -23,11 +24,11 @@ class ReviewPublisher:
 
 class ReviewAgent(BaseAgent):
     def __init__(
-        self, gateway, anthropic_client, config, result_sink=None, token_budget=None
+        self, gateway, llm_client, config, result_sink=None, token_budget=None
     ) -> None:
         super().__init__(
             gateway,
-            anthropic_client,
+            llm_client,
             config,
             "You draft concise review feedback from supervisor-approved evidence before posting it.",
             result_sink,

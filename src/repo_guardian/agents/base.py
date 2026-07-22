@@ -17,14 +17,14 @@ class BaseAgent(ABC):
     def __init__(
         self,
         gateway: SecureToolGateway,
-        anthropic_client: Any,
+        llm_client: Any,
         config: Config,
         system_prompt: str,
         result_sink: list[ToolResult] | None = None,
         token_budget: RunTokenBudget | None = None,
     ) -> None:
         self._gateway = gateway
-        self._client = anthropic_client
+        self._client = llm_client
         self._config = config
         self._system_prompt = f"{system_prompt}\n\n{GROUNDING_RULES}"
         self._result_sink = result_sink if result_sink is not None else []
